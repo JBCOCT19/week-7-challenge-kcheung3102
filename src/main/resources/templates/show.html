@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+</head>
+<body>
+<div class="container">
+    <div class="card text-center">
+        <!-- Card content -->
+        <div class="card-body">
+            <div th:if="${message.image != null and !message.image.equals('')}" >
+                <img class="card-img-top"  th:src="${message.image}" alt="image posted" />
+            </div>
+            <a href="/show">
+                <div class="mask rgba-white-slight"></div>
+            </a>
+
+            <!-- Text -->
+            <h5 class="card-text" >Posted On: <span th:text="${message.date}"></span></h5>
+            <p class="card-text" >Content:<span th:text="${message.content}"></span></p>
+            <p class="card-text" >PostedBy:  <span th:text="${message.sentby}"></span></p>
+            <!-- Button -->
+            <a type="button" class="btn btn-outline-primary" th:href="@{/delete/{id}(id=${message.id})}" >Delete this Job</a>
+            <a type="button" class="btn btn-outline-primary" th:href="@{/update/{id}(id=${message.id})}" >Update this Job</a>
+
+        </div>
+    </div>
+</body>
+</html>

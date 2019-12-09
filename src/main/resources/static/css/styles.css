@@ -1,24 +1,25 @@
-/*******************************************************/
-/* sticky footer + one line for persistent top-nav-bar */
-html, body {
-    height: 100%;                       /* sticky footer */
-}
-.content {
-    flex: 1 0 auto;                     /* sticky footer */
-}
-body {
-    display: flex;                      /* sticky footer */
-    flex-direction: column;             /* sticky footer */
 
-    padding-top: 80px!important;        /* push text/body below top-nav-bar */
+html, body {
+    height: 100%;
 }
-.footer {
-    flex-shrink: 0;                     /* sticky footer */
+
+
+
+.card-padding{
+    padding-top: 80px;
+}
+
+.bg{
     text-align: center;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+
+    background:url(background.jpg) no-repeat center center fixed; /* Center and scale the image nicely */
+    /*full height*/
+    height:100%;
+
+    /*covers whole background in all browsers */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
-/* end sticky footer code */
-/* sticky footer from https://css-tricks.com/couple-takes-sticky-footer/  --  Thank you !! */
-/*******************************************************************************************/
 

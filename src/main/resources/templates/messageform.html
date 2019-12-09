@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Message Form</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/css/mdb.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="base ::navbar"></div>
+<form action="#" th:action="@{/process}" th:object="${message}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{id}" />
+    <div class="form-group mx-sm-3 mb-2 ">
+        <span class="text-primary">Message:</span><textarea rows="3" th:field="*{content}"  class="form-control"/>
+        <span th:if="${#fields.hasErrors('content')}"
+              th:errors="*{content}"></span><br />
+
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <span class="text-primary">Date:</span> <input type="text" th:field="*{date}" class="form-control" />
+        <span th:if="${#fields.hasErrors('date')}"
+              th:errors="*{date}"></span><br />
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <span class="text-primary">SentBy:</span><input type="text" th:field="*{sentby}" class="form-control" />
+        <span th:if="${#fields.hasErrors('sentby')}"
+              th:errors="*{sentby}"></span><br />
+    </div>
+    <div class="form-group">
+        <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+    </div>
+        <button type="submit" class="btn btn-outline-primary">Submit</button>
+
+</form>
+<div th:fragment="javascript-links"></div>
+</body>
+</html>

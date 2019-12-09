@@ -1,16 +1,17 @@
 package com.roselake.jbc;
 
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -21,13 +22,45 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    MessageRepository messageRepository;
+
+    @Autowired
+    CloudinaryConfig cloudc;
+
     @RequestMapping("/")
     public String index(Model model){
         if (userService.getUser() != null) {
             model.addAttribute("user_id", userService.getUser().getId());
         }
+        model.addAttribute("messages", messageRepository.findAll());
         return "index";
     }
+
+    @GetMapping("/add")
+    public String addMessage(Model model) {
+        model.addAttribute("message", new Message());
+        return "messageform";
+    }
+
+    @PostMapping("/process")
+    public String processForm(@Valid @ModelAttribute Message message, @RequestParam("file") MultipartFile file){
+        if(!file.isEmpty()){
+            try {
+                Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+                message.setImage(uploadResult.get("url").toString());
+                messageRepository.save(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/add";
+            }
+        }
+        else{
+            messageRepository.save(message);
+        }
+        return "redirect:/secure";
+    }
+
 
     @RequestMapping("/login")
     public String login(Model model){
@@ -58,6 +91,7 @@ public class HomeController {
         if (userService.getUser() != null) {
             model.addAttribute("user_id", userService.getUser().getId());
         }
+        model.addAttribute("messages", messageRepository.findAll());
         return "secure";
     }
 
@@ -96,4 +130,25 @@ public class HomeController {
 
     }
 
-}
+    @RequestMapping("/update/{id}")
+    public String updateMessage(@PathVariable("id") long id,
+                                Model model){
+        model.addAttribute("message", messageRepository.findById(id).get());
+        return "messageform";
+    }
+
+    @RequestMapping("/delete/{id}")
+    public String deleteMessage(@PathVariable("id") long id){
+        messageRepository.deleteById(id);
+        return "redirect:/secure";
+    }
+
+    @RequestMapping("/detail/{id}")
+    public String showMessage(@PathVariable("id") long id, Model model) {
+        model.addAttribute("message" , messageRepository.findById(id).get());
+        return "show";
+    }
+
+    }
+
+

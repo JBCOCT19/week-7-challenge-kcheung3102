@@ -8,9 +8,12 @@
     <!-- my (one free) fontawesome kit link -->
     <script src="https://kit.fontawesome.com/652790bb8a.js" crossorigin="anonymous"></script>
 
-    <!-- link to bootstrap cdn 11.21.19 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/css/mdb.min.css" rel="stylesheet">
 
     <!-- personal style sheet link -->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
@@ -20,14 +23,53 @@
 
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark primary-color">
+    <a class="navbar-brand" href="/">JBC</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<div th:if="${message}!=null" class="alert alert-info" role="alert">
-    <span th:text="${message}"></span>
+<h1>Landing Page insecure</h1>
+
+<div class="container col-md-8">
+    <div th:each="message : ${messages}">
+        <div class="jumbotron jumbotron-fluid text-center ">
+
+            <!-- Card image -->
+            <div class="view overlay my-4">
+                <div th:if="${message.image != null and !message.image.equals('')}" >
+                    <img class="img-fluid"  th:src="${message.image}" alt="image posted" />
+                </div>
+                <a href="/show">
+                    <div class="mask rgba-white-slight"></div>
+                </a>
+            </div>
+
+
+            <h4 class="card-title h4 pb-2">Posted By: <strong>[[${user.firstName}]]</strong></h4>
+            <p class="card-text"> Content: <small th:text="${message.content}"></small> </p>
+            <p class="card-text">Date Posted: <small th:text="${message.date}"></small></p>
+
+        </div>
+    </div>
+
 </div>
 
-<h2>This page is accessible by everyone in the world. It is "insecure".</h2>
-
-<h2><a href="/secure">Here's the link to the secure section of the site!</a></h2>
-
+<div th:fragment="javascript-links"></div>
 </body>
 </html>
